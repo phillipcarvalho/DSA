@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node{
+    struct node *prev;
+    int data;
+    struct node *next;
+};
+void print(struct node *head){
+    struct node *ptr=head;
+    while(ptr!=NULL){
+        printf("%d ",ptr->data);
+        ptr=ptr->next;
+    }
+}
+
+void deletebeg(struct node** head){
+    struct node *temp=(struct node*)malloc(sizeof(struct node));
+    if((*head)->prev==NULL){
+        temp=*head;
+        
+        *head=(*head)->next;
+        (*head)->prev=NULL;
+        free(temp);
+    }
+}
+void deleteend(struct node** head){
+    struct node *temp=(struct node*)malloc(sizeof(struct node));
+    struct node* ptr=*head;
+    struct node* prevptr;
+    while(ptr->next!=NULL){
+        prevptr=ptr;
+        ptr=ptr->next;
+    }
+    temp=ptr;
+    free(ptr);
+    prevptr->next=NULL;
+    
+}
+void deletemid(struct node** head,int search){
+    struct node *temp=(struct node*)malloc(sizeof(struct node));
+    struct node* ptr=*head;
+    struct node* prevptr;
+    while(ptr->data!=search && ptr->next!=NULL){
+        prevptr=ptr;
+        ptr=ptr->next;
+    }
+    if(ptr->next!=NULL){
+        prevptr->next=ptr->next;
+        ptr->next->prev=prevptr;
+        temp=ptr;
+        free(temp);
+    }
+}
+
+int main(){
+    int n;
+    scanf("%d",&n);
+    int x;
+    scanf("%d",&x);
+    struct node *head=(struct node*)malloc(sizeof(struct node));
+    head->prev=NULL;
+    head->data=x;
+    head->next=NULL;
+    struct node *ptr=(struct node*)malloc(sizeof(struct node));
+    ptr=head;
+    struct node *temp;
+    for(int i=1;i<n;i++){
+        scanf("%d",&x);
+        temp=(struct node*)malloc(sizeof(struct node));
+        ptr->next=temp;
+        temp->prev=ptr;
+        temp->data=x;
+        temp->next=NULL;
+        ptr=ptr->next;
+        
+    }
+    
+    deletebeg(&head);
+    deleteend(&head);
+    deletemid(&head,3);
+    print(head);
+}
