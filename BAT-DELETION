@@ -1,0 +1,27 @@
+  struct node*  delete1(struct node *bst,int x){
+        struct node*  temp=(struct node* )malloc(sizeof(struct node));
+        if(x<bst->data){
+            bst->left=delete1(bst->left,x);
+        }
+        else if(x>bst->data){
+            bst->right=delete1(bst->right,x);
+    }
+    else if(bst->left && bst->right){
+        temp=findmin(bst->right);
+        bst->data=temp->data;
+        bst->right=delete1(bst->right,bst->data);
+        
+        
+    }
+    else{
+        temp=bst;
+        if(bst->left==NULL){
+            bst=bst->right;
+        }
+        else{
+            bst=bst->left;
+        }
+        free(temp);
+    }
+    return bst;
+    }
