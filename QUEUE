@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+struct Stack {
+    int data[MAX];
+    int top;
+};
+
+void initialize(struct Stack* stack) {
+    stack->top = -1;
+}
+
+int isFull(struct Stack* stack) {
+    return stack->top == MAX - 1;
+}
+
+int isEmpty(struct Stack* stack) {
+    return stack->top == -1;
+}
+
+void push(struct Stack* stack, int value) {
+    if (isFull(stack)) {
+        printf("Stack Overflow\n");
+        return;
+    }
+    stack->data[++stack->top] = value;
+}
+
+int pop(struct Stack* stack) {
+    if (isEmpty(stack)) {
+        printf("Stack Underflow\n");
+        return -1;
+    }
+    return stack->data[stack->top--];
+}
+
+void display(struct Stack* stack) {
+    if (isEmpty(stack)) {
+        printf("Stack is empty\n");
+        return;
+    }
+    for (int i = stack->top; i >= 0; i--) {
+        printf("%d ", stack->data[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    struct Stack stack;
+    initialize(&stack);
+
+    push(&stack, 10);
+    push(&stack, 20);
+    push(&stack, 30);
+
+    printf("Stack contents: ");
+    display(&stack);
+
+    printf("Popped element: %d\n", pop(&stack));
+
+    printf("Stack contents after pop: ");
+    display(&stack);
+
+    return 0;
+}
